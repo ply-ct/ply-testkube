@@ -1,0 +1,5 @@
+get test:
+  url: ${baseUrl}/tests/ply-demo
+  method: GET
+  headers:
+    Accept: application/json

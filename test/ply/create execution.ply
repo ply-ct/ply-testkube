@@ -1,0 +1,16 @@
+create execution:
+  url: ${baseUrl}/tests/ply-demo/executions
+  method: POST
+  headers:
+    Content-Type: application/json
+  body: |-
+    {
+      "args": [
+        "test-files=test/requests/get-movie.ply,test/requests/movies-api.ply.yaml",
+        "values-files=test/values/global.json,test/values/local-docker.json",
+        "verbose=true"
+      ],
+      "executionLabels": {
+        "environment": "localhost"
+      }
+    }

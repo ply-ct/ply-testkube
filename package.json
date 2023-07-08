@@ -1,0 +1,39 @@
+{
+  "name": "@ply-ct/ply-testkube",
+  "version": "0.3.0",
+  "description": "Ply executor for testkube",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ply-ct/ply-testkube.git"
+  },
+  "main": "dist/main.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist",
+  "scripts": {
+    "ver": "PKG_VER=$(jq -r .version ./package.json) && echo export const version = \\'$PKG_VER\\'\\; > src/version.ts",
+    "ply-ver": "PLY_VER=$(jq -r .version ./node_modules/@ply-ct/ply/package.json) && echo export const plyVersion = \\'$PLY_VER\\'\\; >> src/version.ts",
+    "build": "npm run ver && npm run ply-ver && tsc && docker build -t plyct/ply-testkube .",
+    "create-exec": "kubectl testkube create executor --image plyct/ply-testkube --types ply-ct/test --feature artifacts --name ply-executor",
+    "create-test": "kubectl testkube create test --name ply-demo --type ply-ct/test --job-template job.yaml --git-uri https://github.com/ply-ct/ply-demo.git --git-username-secret github=username --git-token-secret github=token",
+    "run-test": "kubectl testkube run test ply-demo --args \"values-files=test/values/global.json,test/values/local-docker.json test-files=test/requests/movie-queries.ply.yaml,test/flows/movies-api.ply.flow verbose=true npmInstall=true\"",
+    "delete-exec": "kubectl testkube delete executor ply-executor",
+    "delete-test": "kubectl testkube delete test ply-demo"
+  },
+  "dependencies": {
+    "@ply-ct/ply": "^3.2.5",
+    "@ply-ct/ply-api": "^1.2.5",
+    "camelcase": "^6.3.0",
+    "glob": "^8.1.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.34.0",
+    "@types/glob": "^8.0.1",
+    "typescript": "^4.9.5"
+  }
+}
