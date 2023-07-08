@@ -16,11 +16,10 @@ jobs:
       FORCE_COLOR: 'true'
     steps:
       - uses: actions/checkout@v3
-      - name: testkube
-        uses: kubeshop/testkube-docker-action@v1
+      - uses: kubeshop/testkube-docker-action@v1
         with:
           command: version
-          resource: test
+          # resource: test
       # - uses: actions/setup-node@v3
       #   with:
       #     node-version: '18'
