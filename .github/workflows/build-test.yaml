@@ -1,0 +1,32 @@
+name: build
+
+on:
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+  workflow_dispatch:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      FORCE_COLOR: 'true'
+    steps:
+      - uses: actions/checkout@v3
+- name: Create test
+  uses: kubeshop/testkube-docker-action@v1
+  with:
+    command: version
+    resource: test
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '18'
+      # - run: |
+      #     npm install
+      #     npm run build
+      # - run: npm run start-movies
+
+      # - run: npm run stop-movies
