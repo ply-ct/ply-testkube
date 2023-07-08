@@ -29,6 +29,7 @@ jobs:
       - run: |
           npm install
           npm run build
+      - run: npm run create-exec
       # - run: npm run start-movies
 
       # - run: npm run stop-movies
