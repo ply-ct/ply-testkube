@@ -12,6 +12,7 @@ export interface WorkerOptions {
     plyPath?: string;
     delay?: number;
     npmInstall?: boolean;
+    events?: boolean;
 }
 
 export class PlyWorker {
@@ -72,22 +73,24 @@ export class PlyWorker {
         const plyees = await plier.find(tests);
         this.output.debug('Plyees: ' + JSON.stringify(plyees, null, 2));
 
-        // listen for events
-        plier.on('suite', (suiteEvent: ply.SuiteEvent) => {
-            this.output.event('ply.SuiteEvent', suiteEvent);
-        });
-        plier.on('test', (plyEvent: ply.PlyEvent) => {
-            this.output.event('ply.PlyEvent', plyEvent);
-        });
-        plier.on('outcome', (outcomeEvent: ply.OutcomeEvent) => {
-            this.output.event('ply.OutcomeEvent', outcomeEvent);
-        });
-        plier.on('flow', (flowEvent: FlowEvent) => {
-            this.output.event('flowbee.FlowEvent', flowEvent);
-        });
-        plier.on('error', (err: Error) => {
-            this.output.error(err.message, err);
-        });
+        if (this.options.events) {
+            // listen for events
+            plier.on('suite', (suiteEvent: ply.SuiteEvent) => {
+                this.output.event('ply.SuiteEvent', suiteEvent);
+            });
+            plier.on('test', (plyEvent: ply.PlyEvent) => {
+                this.output.event('ply.PlyEvent', plyEvent);
+            });
+            plier.on('outcome', (outcomeEvent: ply.OutcomeEvent) => {
+                this.output.event('ply.OutcomeEvent', outcomeEvent);
+            });
+            plier.on('flow', (flowEvent: FlowEvent) => {
+                this.output.event('flowbee.FlowEvent', flowEvent);
+            });
+            plier.on('error', (err: Error) => {
+                this.output.error(err.message, err);
+            });
+        }
 
         const overallResults = await plier.run(plyees, this.options.runOptions);
         const duration = Date.now() - start;

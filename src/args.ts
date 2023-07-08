@@ -10,6 +10,7 @@ type ArgOptions = ply.Options & {
     testFiles?: string[];
     delay?: number;
     npmInstall?: boolean;
+    events?: boolean;
 };
 
 export class PlyArgs {
@@ -38,7 +39,7 @@ export class PlyArgs {
             ...argOptions
         };
 
-        const { testFiles, delay, npmInstall, runOptions, ...plyOptions } = allOptions;
+        const { testFiles, delay, npmInstall, events, runOptions, ...plyOptions } = allOptions;
         if (testFiles) plyOptions.skip = ''; // override skip when test files specified
         this.testFiles = testFiles;
 
@@ -58,7 +59,8 @@ export class PlyArgs {
             runOptions: { ...this.defaultRunOptions, ...(runOptions as ply.RunOptions) },
             ...(process.env.PLY_PATH && { plyPath: path.resolve(process.env.PLY_PATH) }),
             delay,
-            npmInstall
+            npmInstall,
+            events
         };
 
         for (const key of Object.keys(vars)) {
