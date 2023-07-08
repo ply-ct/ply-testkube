@@ -16,25 +16,16 @@ jobs:
       FORCE_COLOR: 'true'
     steps:
       - uses: actions/checkout@v3
-      - name: Create test
-        id: create_test
-        uses: kubeshop/testkube-docker-action@v1
+      - uses: actions/setup-node@v3
         with:
-          command: create
-          resource: test
-          namespace: testkube
-          parameters: '--type k6/script --name testkube-github-action'
-          stdin: "import http from 'k6/http';\nimport { sleep,check } from 'k6';\n\nexport default function () {\n  const baseURI = `${__ENV.TESTKUBE_HOMEPAGE_URI || 'https://testkube.kubeshop.io'}`\n  check(http.get(`${baseURI}/`), {\n    'check testkube homepage home page': (r) =>\n      r.body.includes('Your Friendly Cloud-Native Testing Framework for Kubernetes'),\n  });\n\n\n  sleep(1);\n}\n"
-      # - uses: kubeshop/testkube-docker-action@v1
-      #   with:
-      #     command: version
-      # resource: test
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '18'
-      # - run: |
-      #     npm install
-      #     npm run build
+          node-version: '18'
+      - uses: kubeshop/testkube-docker-action@v1
+        with:
+          command: get
+          resource: tests
+      - run: |
+          npm install
+          npm run build
       # - run: npm run start-movies
 
       # - run: npm run stop-movies
