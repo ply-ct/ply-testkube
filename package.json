@@ -1,6 +1,6 @@
 {
   "name": "@ply-ct/ply-testkube",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Ply executor for testkube",
   "license": "MIT",
   "repository": {
@@ -19,15 +19,15 @@
     "docker-build": "docker build -t plyct/ply-testkube .",
     "docker-pull": "docker pull plyct/ply-testkube:1.0.2",
     "docker-tag": "docker tag plyct/ply-testkube plyct/ply-testkube:1.0.2",
-    "create-exec": "kubectl testkube create executor --image plyct/ply-testkube:1.0.2 --types ply-ct/test --name ply-executor",
+    "create-exec": "kubectl testkube create executor --image plyct/ply-testkube --types ply-ct/test --name ply-executor",
     "create-test": "kubectl testkube create test --name ply-demo --type ply-ct/test --git-uri https://github.com/ply-ct/ply-demo.git",
     "run-test": "kubectl testkube run test ply-demo --args \"values-files=test/values/global.json,test/values/ply-ct.json test-files=test/requests/movie-queries.ply.yaml,test/flows/get-movies.ply.flow events=true\"",
     "delete-exec": "kubectl testkube delete executor ply-executor",
     "delete-test": "kubectl testkube delete test ply-demo"
   },
   "dependencies": {
-    "@ply-ct/ply": "^3.2.5",
-    "@ply-ct/ply-api": "^1.2.5",
+    "@ply-ct/ply": "^3.2.6",
+    "@ply-ct/ply-api": "^1.3.0",
     "camelcase": "^6.3.0",
     "glob": "^8.1.0",
     "ts-node": "^10.9.1"
