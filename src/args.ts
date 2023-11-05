@@ -34,7 +34,7 @@ export class PlyArgs {
         const argOptions = this.parse(args);
         output.debug('Parsed options', argOptions);
 
-        const allOptions = {
+        const allOptions: ply.PlyOptions & { runOptions?: ply.RunOptions } & ArgOptions = {
             ...new ply.Config(defaults as ply.PlyOptions, true).options,
             ...argOptions
         };

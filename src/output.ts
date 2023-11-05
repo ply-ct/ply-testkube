@@ -9,6 +9,7 @@ export interface OutputOptions {
     enabled?: boolean;
     indent?: number;
 }
+
 export class Output implements ply.Log {
     readonly options: OutputOptions;
 
@@ -20,14 +21,14 @@ export class Output implements ply.Log {
         this.options = { enabled: true, indent: 2, ...options };
     }
 
-    private log(level: OutputLevel = 'info', message: string, obj?: any) {
+    private out(level: OutputLevel = 'info', message: string, obj?: any) {
         if (!this.options.enabled) return;
         if (level === 'debug' && !this.options.debug) return;
         if (typeof message !== 'string') message = '' + message;
 
         if (obj !== undefined) {
             if (obj.stack) {
-                this.log(level, message);
+                this.out(level, message);
                 console.log(
                     JSON.stringify({
                         type: level === 'error' ? 'error' : 'log',
@@ -36,7 +37,7 @@ export class Output implements ply.Log {
                     })
                 );
             } else {
-                this.log(level, message + ': ' + JSON.stringify(obj, null, this.options.indent));
+                this.out(level, message + ': ' + JSON.stringify(obj, null, this.options.indent));
             }
         } else {
             console.log(
@@ -49,16 +50,20 @@ export class Output implements ply.Log {
         }
     }
 
+    log(message: string, obj?: any): void {
+        this.out('info', message, obj);
+    }
+
     error(message: string, obj?: any) {
-        this.log('error', message, obj);
+        this.out('error', message, obj);
     }
 
     info(message: string, obj?: any) {
-        this.log('info', message, obj);
+        this.out('info', message, obj);
     }
 
     debug(message: string, obj?: any) {
-        this.log('debug', message, obj);
+        this.out('debug', message, obj);
     }
 
     result(status: ExecutionStatus, output: string, message?: string) {
