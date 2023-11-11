@@ -5,7 +5,7 @@ COPY runner /bin/runner
 RUN chmod +x /bin/runner
 COPY dist /usr/src/executor/dist
 COPY node_modules /usr/src/executor/node_modules
-COPY LICENSE /usr/src/executor/dist
+COPY LICENSE /usr/src/executor/dist/LICENSE
 
 CMD [ "/bin/runner" ]
 
